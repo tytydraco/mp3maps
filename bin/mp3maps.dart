@@ -75,10 +75,9 @@ Future<void> main(List<String> arguments) async {
 
     final outputFile = File(output);
     await outputFile.writeAsString(textDirections);
-  } on FormatException catch (e) {
-    // Print usage information if an invalid argument was provided.
+  } on Object catch (e) {
     stderr
-      ..writeln(e.message)
+      ..writeln(e.toString())
       ..writeln()
       ..writeln(argParser.usage);
   }
