@@ -1,0 +1,19 @@
+FROM: Home (Omaha, NE)
+TO: CVS on U Street
+---------------
+
+[  R] North 120th Street in 1186 ft
+[  L] Stonegate Drive in 15 ft
+[  R] North 118th Street in 1395 ft
+[  L] North 117th Avenue in 1949 ft
+[  L] North 120th Street in 524 ft
+[  R] Franklin Street in 43 ft
+[  R] Farnam Street in 1208 ft
+[  L] South 123rd Street in 2564 ft
+[  L] Morrison Drive in 2163 ft
+[ KR] South 130th Street in 68 ft
+[  R] Augusta Avenue in 35 ft
+[  L] South 132nd Street in 33 ft
+[  R] South 133rd Street in 69 ft
+[  L] West Papio Trail in 289 ft
+[  R] U Street in 233 ft
