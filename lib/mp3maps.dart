@@ -80,9 +80,8 @@ class Mp3Maps {
 
   /// Reduce directions into compact instructions.
   String _compactTextInstruction(DirectionRouteSegmentStep step) {
-    final directionString = _compactDirection(step.type).padLeft(3);
+    final directionString = _compactDirection(step.type);
     final distanceFtString = step.distance.toImperialDistance();
-
     return '[$directionString] ${step.name} in $distanceFtString';
   }
 
@@ -94,7 +93,6 @@ class Mp3Maps {
   ) {
     final flattenedSteps = FlattenSteps(steps: steps).flatten();
     final stepsFormatted = flattenedSteps
-        .where((step) => [10, 11].contains(step.type) || step.name != '-')
         .map(_compactTextInstruction)
         .join('\n');
 
@@ -107,7 +105,7 @@ $stepsFormatted''';
   }
 
   /// Return directions as text instructions.
-  Future<String> getDirectionsAsText() async {
+  Future<String> generate() async {
     final result = await ors.directionsMultiRouteDataPost(
       coordinates: [
         ORSCoordinate(latitude: fromLatitude, longitude: fromLongitude),

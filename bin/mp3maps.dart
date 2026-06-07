@@ -26,6 +26,16 @@ ArgParser _argParser() {
       mandatory: true,
     )
     ..addOption(
+      'from-name',
+      help: 'The plain text origin location name.',
+      mandatory: true,
+    )
+    ..addOption(
+      'to-name',
+      help: 'The plain text destination location name.',
+      mandatory: true,
+    )
+    ..addOption(
       'from-latitude',
       help: 'The origin latitude',
       mandatory: true,
@@ -52,6 +62,11 @@ ArgParser _argParser() {
       defaultsTo: 'walking',
       allowed: ['walking', 'biking', 'driving'],
     )
+    ..addFlag(
+      'roundtrip',
+      abbr: 'r',
+      help: 'Generate directions for the route back to the origin.',
+    )
     ..addOption(
       'output',
       abbr: 'o',
@@ -66,11 +81,14 @@ Future<void> main(List<String> arguments) async {
   try {
     final results = argParser.parse(arguments);
     final apiKey = results['api-key'] as String;
+    final fromName = results['from-name'] as String;
+    final toName = results['to-name'] as String;
     final fromLatitude = double.parse(results['from-latitude'] as String);
     final fromLongitude = double.parse(results['from-longitude'] as String);
     final toLatitude = double.parse(results['to-latitude'] as String);
     final toLongitude = double.parse(results['to-longitude'] as String);
     final mode = results['mode'] as String;
+    final roundtrip = results['roundtrip'] as bool;
     final output = results['output'] as String;
 
     var profile = ORSProfile.footWalking;
@@ -85,8 +103,8 @@ Future<void> main(List<String> arguments) async {
 
     final mp3Maps = Mp3Maps(
       apiKey: apiKey,
-      displayFromAddress: 'Home (Omaha, NE)',
-      displayToAddress: 'CVS on U Street',
+      displayFromAddress: fromName,
+      displayToAddress: toName,
       fromLatitude: fromLatitude,
       fromLongitude: fromLongitude,
       toLatitude: toLatitude,
@@ -94,7 +112,24 @@ Future<void> main(List<String> arguments) async {
       profile: profile,
     );
 
-    final textDirections = await mp3Maps.getDirectionsAsText();
+    var textDirections = await mp3Maps.generate();
+
+    if (roundtrip) {
+      final mp3MapsInverse = Mp3Maps(
+        apiKey: apiKey,
+        displayFromAddress: toName,
+        displayToAddress: fromName,
+        fromLatitude: toLatitude,
+        fromLongitude: toLongitude,
+        toLatitude: fromLatitude,
+        toLongitude: fromLongitude,
+        profile: profile,
+      );
+      final textDirectionsInverse = await mp3MapsInverse.generate();
+
+      textDirections += '\n\n####################\n\n';
+      textDirections += textDirectionsInverse;
+    }
 
     final outputFile = File(output);
     await outputFile.writeAsString(textDirections);
