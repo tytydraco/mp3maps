@@ -15,9 +15,7 @@ class FlattenSteps {
     final result = <DirectionRouteSegmentStep>[];
 
     for (final step in steps) {
-      if (step.name == '-') continue;
-
-      if (result.isEmpty) {
+      if (result.isEmpty || step.name == '-') {
         result.add(step);
         continue;
       }
