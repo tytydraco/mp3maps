@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:args/args.dart';
 import 'package:mp3maps/mp3maps.dart';
+import 'package:open_route_service/open_route_service.dart';
 
 ArgParser _argParser() {
   final argParser = ArgParser();
@@ -42,6 +43,13 @@ ArgParser _argParser() {
       mandatory: true,
     )
     ..addOption(
+      'mode',
+      abbr: 'm',
+      help: 'The mode of transportation.',
+      defaultsTo: 'walking',
+      allowed: ['walking', 'biking', 'driving'],
+    )
+    ..addOption(
       'output',
       abbr: 'o',
       help: 'The output file path.',
@@ -59,7 +67,18 @@ Future<void> main(List<String> arguments) async {
     final fromLongitude = double.parse(results['from-longitude'] as String);
     final toLatitude = double.parse(results['to-latitude'] as String);
     final toLongitude = double.parse(results['to-longitude'] as String);
+    final mode = results['mode'] as String;
     final output = results['output'] as String;
+
+    var profile = ORSProfile.footWalking;
+    switch (mode) {
+      case 'walking':
+        profile = ORSProfile.footWalking;
+      case 'biking':
+        profile = ORSProfile.cyclingRoad;
+      case 'driving':
+        profile = ORSProfile.drivingCar;
+    }
 
     final mp3Maps = Mp3Maps(
       apiKey: apiKey,
@@ -69,6 +88,7 @@ Future<void> main(List<String> arguments) async {
       fromLongitude: fromLongitude,
       toLatitude: toLatitude,
       toLongitude: toLongitude,
+      profile: profile,
     );
 
     final textDirections = await mp3Maps.getDirectionsAsText();
