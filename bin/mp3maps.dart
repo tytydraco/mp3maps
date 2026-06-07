@@ -13,7 +13,10 @@ ArgParser _argParser() {
       negatable: false,
       help: 'Print this usage information.',
       callback: (value) {
-        if (value) stdout.writeln(argParser.usage);
+        if (value) {
+          stdout.writeln(argParser.usage);
+          exit(0);
+        }
       },
     )
     ..addOption(
