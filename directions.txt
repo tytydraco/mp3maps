@@ -1,5 +1,6 @@
-FROM: Home (Omaha, NE)
-TO: CVS on U Street
+FROM:	Home (Omaha, NE)
+TO:	CVS on U Street
+MODE:	Walking
 ---------------
 
 [  R] North 120th Street in 1186 ft

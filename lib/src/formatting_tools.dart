@@ -31,3 +31,14 @@ extension DoubleFormattingTools on double {
     return '$feetRounded ft';
   }
 }
+
+/// [ORSProfile] formatting tools for [OpenRouteService].
+extension ModeFormattingTools on ORSProfile {
+  /// Return the mode name as a pretty string.
+  String prettyName() {
+    if (this == ORSProfile.cyclingRoad) return 'Biking';
+    if (this == ORSProfile.drivingCar) return 'Driving';
+    
+    return 'Walking';
+  }
+}
