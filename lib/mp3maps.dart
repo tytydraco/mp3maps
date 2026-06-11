@@ -1,4 +1,3 @@
-import 'package:mp3maps/src/flatten_steps.dart';
 import 'package:mp3maps/src/formatting_tools.dart';
 import 'package:mp3maps/src/step_type.dart';
 import 'package:open_route_service/open_route_service.dart';
@@ -62,10 +61,7 @@ class Mp3Maps {
     String toAddress,
     List<DirectionRouteSegmentStep> steps,
   ) {
-    final flattenedSteps = FlattenSteps(steps: steps).flatten();
-    final stepsFormatted = flattenedSteps
-        .map(_compactTextInstruction)
-        .join('\n');
+    final stepsFormatted = steps.map(_compactTextInstruction).join('\n');
 
     return '''
 FROM: $fromAddress
